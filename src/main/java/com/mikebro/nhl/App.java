@@ -1,12 +1,12 @@
 package com.mikebro.nhl;
 
-import java.util.Date;
-
-import javax.swing.Timer;
+import com.mikebro.nhl.json.Schedule;
+import com.mikebro.nhl.service.NHLService;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -21,8 +21,12 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
 
+	private NHLService nhlService;
+
+
 	@Override
 	public void start( Stage primaryStage ) {
+		nhlService = Launcher.getNHLService();
 
 		Button btn = new Button();
 		btn.setText( "Say 'Hello World'" );
@@ -61,8 +65,8 @@ public class App extends Application {
 		root.getChildren().add( cc );
 		root.getChildren().add( cc2 );
 
-		Timer timer = new Timer(5000, ae -> cc2.setText( (new Date()).toString() ) );
-		timer.start();
+		Schedule schedule = nhlService.getTodaySchedule();
+		cc2.setText( String.format( "found %s games", schedule.getGames().size() ) );
 
 		Scene scene = new Scene( root, 300, 500 );
 
@@ -71,10 +75,26 @@ public class App extends Application {
 		primaryStage.show();
 	}
 
+	/**
+	 * The main() method is ignored in correctly deployed JavaFX application.
+	 * main() serves only as fallback in case the application can not be launched
+	 * through deployment artifacts, e.g., in IDEs with limited FX support.
+	 * NetBeans ignores main().
+	 *
+	 * @param args the command line arguments
+	public static void main( String[] args ) {
+		launch( args );
+	}
+	 */
+
+
+
 
 	public class CustomControl extends HBox {
 		private TextField textField;
 		private Button button;
+
+		private Insets padding = new Insets(0, 3, 0, 3);
 
 		public CustomControl( String customString ) {
 			super(5);
