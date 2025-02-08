@@ -1,4 +1,4 @@
-package com.example;
+package com.mikebro.nhl;
 
 import javafx.application.Application;
 
