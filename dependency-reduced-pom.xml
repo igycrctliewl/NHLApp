@@ -25,7 +25,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>com.example.Launcher</mainClass>
+                  <mainClass>com.mikebro.nhl.Launcher</mainClass>
                 </transformer>
               </transformers>
             </configuration>
@@ -36,7 +36,10 @@
   </build>
   <properties>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <springVersion>5.3.15</springVersion>
     <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jacksonVersion>2.17.2</jacksonVersion>
+    <apacheLoggingVersion>2.17.1</apacheLoggingVersion>
   </properties>
 </project>
