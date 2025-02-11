@@ -1,5 +1,6 @@
 package com.mikebro.nhl;
 
+import com.mikebro.nhl.control.SwitchButton;
 import com.mikebro.nhl.format.FormatHelper;
 import com.mikebro.nhl.json.Game;
 import com.mikebro.nhl.json.Schedule;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -38,6 +40,13 @@ public class App extends Application {
 		nhlService = Launcher.getNHLService();
 
 		Pane root = new Pane();
+
+		//ToggleButton tb1 = new ToggleButton("Show Scores");
+		SwitchButton tb1 = new SwitchButton("Show Scores");
+		tb1.setLayoutX( labelX );
+		tb1.setLayoutY( labelY );
+		labelY += yIncrement;
+		root.getChildren().add( tb1 );
 
 		CustomControl cc = new CustomControl( "434 - Minnesota 1 - 4 Los Angeles - Period 3 (05:13)" );
 		cc.setLayoutX( labelX );
