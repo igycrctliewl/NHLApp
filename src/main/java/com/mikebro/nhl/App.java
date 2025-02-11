@@ -35,6 +35,7 @@ public class App extends Application {
 	private static double labelY = 20.0;
 	private static double yIncrement = 30.0;
 
+
 	@Override
 	public void start( Stage primaryStage ) {
 		nhlService = Launcher.getNHLService();
@@ -50,11 +51,11 @@ public class App extends Application {
 		root.getChildren().add( showLabel );
 
 
-		SwitchButton tb1 = new SwitchButton();
-		tb1.setLayoutX( 450 );
-		tb1.setLayoutY( labelY );
+		SwitchButton showScores = new SwitchButton();
+		showScores.setLayoutX( 450 );
+		showScores.setLayoutY( labelY );
 		labelY += yIncrement;
-		root.getChildren().add( tb1 );
+		root.getChildren().add( showScores );
 
 		CustomControl cc = new CustomControl( "434 - Minnesota 1 - 4 Los Angeles - Period 3 (05:13)" );
 		cc.setLayoutX( labelX );
@@ -72,7 +73,7 @@ public class App extends Application {
 		cc2.setText( String.format( "found %s games", schedule.getGames().size() ) );
 
 		for( Game g : schedule.getGames() ) {
-			System.out.println( FormatHelper.buildGameString( g ) );
+			System.out.println( FormatHelper.buildGameString( g, showScores.getState() ) );
 		}
 
 		Scene scene = new Scene( root, sceneWidth, sceneHeight );

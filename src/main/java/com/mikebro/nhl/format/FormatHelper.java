@@ -9,7 +9,7 @@ public class FormatHelper {
 	 * vital information for the game.  The short ID is a must.
 	 * It would be nice to be able to toggle scores on/off
 	 */
-	public static String buildGameString( Game game ) {
+	public static String buildGameString( Game game, boolean showScores ) {
 		StringBuilder builder = new StringBuilder();
 		builder.append( game.getId() );
 		return builder.toString();
