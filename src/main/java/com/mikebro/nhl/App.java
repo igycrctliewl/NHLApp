@@ -41,9 +41,17 @@ public class App extends Application {
 
 		Pane root = new Pane();
 
-		//ToggleButton tb1 = new ToggleButton("Show Scores");
-		SwitchButton tb1 = new SwitchButton("Show Scores");
-		tb1.setLayoutX( labelX );
+		Label showLabel = new Label();
+		showLabel.setText( "Show Scores" );
+		showLabel.setFont( new Font( "Verdana", 10.0 ) );
+		showLabel.setPrefHeight( 20.0 );
+		showLabel.setLayoutX( 375 );
+		showLabel.setLayoutY( labelY - 2 );
+		root.getChildren().add( showLabel );
+
+
+		SwitchButton tb1 = new SwitchButton();
+		tb1.setLayoutX( 450 );
 		tb1.setLayoutY( labelY );
 		labelY += yIncrement;
 		root.getChildren().add( tb1 );

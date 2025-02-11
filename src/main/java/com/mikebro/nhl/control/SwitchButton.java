@@ -40,7 +40,7 @@ public class SwitchButton extends StackPane {
 		button.setStyle(buttonStyleOff);
 	}
 
-	public SwitchButton( String label ) {
+	public SwitchButton() {
 		init();
 		EventHandler<Event> click = new EventHandler<Event>() {
 			@Override
