@@ -5,16 +5,16 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
-public class CustomControl extends HBox {
+public class GameStatus extends HBox {
 	private Label textLabel;
 
-	public CustomControl( String customString ) {
+	public GameStatus( String customString ) {
 		super(5);
 		createText( customString );
 		this.getChildren().addAll( textLabel );
 	}
 
-	public CustomControl() {
+	public GameStatus() {
 		super(5);
 		createText( "custom" );
 		this.getChildren().addAll( textLabel );

@@ -1,6 +1,6 @@
 package com.mikebro.nhl;
 
-import com.mikebro.nhl.control.CustomControl;
+import com.mikebro.nhl.control.GameStatus;
 import com.mikebro.nhl.control.SwitchButton;
 import com.mikebro.nhl.format.FormatHelper;
 import com.mikebro.nhl.json.Game;
@@ -56,13 +56,13 @@ public class App extends Application {
 		labelY += yIncrement;
 		root.getChildren().add( showScores );
 
-		CustomControl cc = new CustomControl( "434 - Minnesota 1 - 4 Los Angeles - Period 3 (05:13)" );
+		GameStatus cc = new GameStatus( "434 - Minnesota 1 - 4 Los Angeles - Period 3 (05:13)" );
 		cc.setLayoutX( labelX );
 		cc.setLayoutY( labelY );
 		labelY += yIncrement;
 		root.getChildren().add( cc );
 
-		CustomControl cc2 = new CustomControl( "my second" );
+		GameStatus cc2 = new GameStatus( "my second" );
 		cc2.setLayoutX( labelX );
 		cc2.setLayoutY( labelY );
 		labelY += yIncrement;
