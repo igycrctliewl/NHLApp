@@ -11,7 +11,8 @@ public class FormatHelper {
 	 */
 	public static String buildGameString( Game game, boolean showScores ) {
 		StringBuilder builder = new StringBuilder();
-		builder.append( game.getId() );
+		builder.append( game.getId().toString()
+				.substring( game.getId().toString().length() - 4 ));
 		return builder.toString();
 	}
 }
