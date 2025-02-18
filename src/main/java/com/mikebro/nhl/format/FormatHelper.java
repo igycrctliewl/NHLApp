@@ -33,7 +33,7 @@ public class FormatHelper {
 			builder.append( " vs " );
 			builder.append( teamNamesService.getPlaceName( game.getHomeTeam().getAbbrev() ) );
 			builder.append( " - " );
-			builder.append( currentGameState( game ) );
+			builder.append( currentGameState( game, showScores ) );
 		}
 
 		return builder.toString();
@@ -51,11 +51,11 @@ public class FormatHelper {
  *     gameState = FUT
  */
 
-	private static String currentGameState( Game game ) {
+	private static String currentGameState( Game game, boolean showScores ) {
 		String stateOfPlay;
 		switch( game.getGameScheduleState() ) {
 		case "OK":
-			stateOfPlay = gameScheduleStateOK( game );
+			stateOfPlay = gameScheduleStateOK( game, showScores );
 			break;
 		case "PPD":
 			stateOfPlay = "PPD";
@@ -69,7 +69,7 @@ public class FormatHelper {
 		return stateOfPlay;
 	}
 
-	private static String gameScheduleStateOK( Game game ) {
+	private static String gameScheduleStateOK( Game game, boolean showScores ) {
 		String stateOfPlay;
 		switch( game.getGameState() ) {
 		case "FUT":
@@ -79,7 +79,7 @@ public class FormatHelper {
 			stateOfPlay = "Pre-Game";
 			break;
 		case "LIVE":
-			stateOfPlay = gamePeriodState( game );
+			stateOfPlay = gamePeriodState( game, showScores );
 			break;
 		case "OFF":
 		case "FINAL":
@@ -98,12 +98,18 @@ public class FormatHelper {
 		return stateOfPlay;
 	}
 
-	private static String gamePeriodState( Game game ) {
+	private static String gamePeriodState( Game game, boolean showScores ) {
 		String stateOfPlay;
 		PeriodDescriptor desc = game.getPeriodDescriptor();
 		switch( desc.getPeriodType() ) {
-		case "xREG":
-		case "xOT":
+		case "REG":
+		case "OT":
+			if( showScores ) {
+				stateOfPlay = "Period " + desc.getNumber().toString() + " (" + game.getClock().getTimeRemaining() + ")";
+			} else {
+				stateOfPlay = "In-progress";
+			}
+			break;
 		default:
 			// log the unknown periodType value
 			logger.error( String.format( "Unknown periodType value >%s< for game %s", desc.getPeriodType(), game.getId() ) );
