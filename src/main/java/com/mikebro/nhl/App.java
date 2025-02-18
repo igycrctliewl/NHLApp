@@ -1,5 +1,8 @@
 package com.mikebro.nhl;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.mikebro.nhl.control.GameStatus;
 import com.mikebro.nhl.control.SwitchButton;
 import com.mikebro.nhl.format.FormatHelper;
@@ -8,14 +11,8 @@ import com.mikebro.nhl.json.Schedule;
 import com.mikebro.nhl.service.NHLService;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -25,6 +22,8 @@ import javafx.stage.Stage;
  * @author mikebro
  */
 public class App extends Application {
+
+	private static final Log logger = LogFactory.getLog( App.class );
 
 	private NHLService nhlService;
 
@@ -56,23 +55,15 @@ public class App extends Application {
 		labelY += yIncrement;
 		root.getChildren().add( showScores );
 
-		GameStatus cc = new GameStatus( "434 - Minnesota 1 - 4 Los Angeles - Period 3 (05:13)" );
-		cc.setLayoutX( labelX );
-		cc.setLayoutY( labelY );
-		labelY += yIncrement;
-		root.getChildren().add( cc );
-
-		GameStatus cc2 = new GameStatus( "my second" );
-		cc2.setLayoutX( labelX );
-		cc2.setLayoutY( labelY );
-		labelY += yIncrement;
-		root.getChildren().add( cc2 );
 
 		Schedule schedule = nhlService.getTodaySchedule();
-		cc2.setText( String.format( "found %s games", schedule.getGames().size() ) );
 
-		for( Game g : schedule.getGames() ) {
-			System.out.println( FormatHelper.buildGameString( g, showScores.getState() ) );
+		for( Game game : schedule.getGames() ) {
+			GameStatus stat = new GameStatus( FormatHelper.buildGameString( game, showScores.getState() ) );
+			stat.setLayoutX( labelX );
+			stat.setLayoutY( labelY );
+			labelY += yIncrement;
+			root.getChildren().add( stat );
 		}
 
 		Scene scene = new Scene( root, sceneWidth, sceneHeight );

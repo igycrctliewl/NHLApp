@@ -1,11 +1,17 @@
 package com.mikebro.nhl.control;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
 public class GameStatus extends HBox {
+
+	private static final Log logger = LogFactory.getLog( GameStatus.class );
+
 	private Label textLabel;
 
 	public GameStatus( String customString ) {
@@ -32,7 +38,7 @@ public class GameStatus extends HBox {
 		textLabel.setFont( new Font( "Verdana", 16.0 ) );
 		textLabel.setPrefHeight( 25.0 );
 		textLabel.setPrefWidth( 450.0 );
-		System.out.printf( "textfield height: %s  width: %s%n", textLabel.getHeight(), textLabel.getWidth() );
+		//logger.info( String.format( "textfield height: %s  width: %s", textLabel.getHeight(), textLabel.getWidth() ) );
 	}
 
 }
