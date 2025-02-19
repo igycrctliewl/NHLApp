@@ -20,6 +20,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import javax.swing.Timer;
+
 /**
  *
  * @author mikebro
@@ -71,8 +73,10 @@ public class App extends Application {
 			root.getChildren().add( stat );
 		}
 
-		Scene scene = new Scene( root, sceneWidth, sceneHeight );
+		Timer timer = new Timer( 15000, event -> refresh( showScores.getState() ) );
+		timer.start();
 
+		Scene scene = new Scene( root, sceneWidth, sceneHeight );
 		primaryStage.setTitle( "NHLApp" );
 		primaryStage.setScene( scene );
 		primaryStage.show();
