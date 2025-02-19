@@ -37,6 +37,7 @@
   <properties>
     <maven.compiler.target>1.8</maven.compiler.target>
     <springVersion>5.3.15</springVersion>
+    <NHLDataVersion>1.0.2-STATIC_TEST_NOV</NHLDataVersion>
     <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacksonVersion>2.17.2</jacksonVersion>

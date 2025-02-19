@@ -28,7 +28,11 @@ public class FormatHelper {
 		builder.append( " - " );
 
 		if( showScores ) {
-			builder.append( "show scores" );
+			builder.append( teamNamesService.getPlaceName( game.getAwayTeam().getAbbrev() ) );
+			builder.append( currentGameScore( game ) );
+			builder.append( teamNamesService.getPlaceName( game.getHomeTeam().getAbbrev() ) );
+			builder.append( " - " );
+			builder.append( currentGameState( game, showScores ) );
 		} else {
 			builder.append( teamNamesService.getPlaceName( game.getAwayTeam().getAbbrev() ) );
 			builder.append( " vs " );
@@ -86,7 +90,7 @@ public class FormatHelper {
 		case "FINAL":
 			stateOfPlay = "Final";
 			// append OT or SO tag for games in extra-time
-			if( game.getPeriodDescriptor().getNumber() > 3 ) {
+			if( game.getPeriodDescriptor().getNumber() > 3 && showScores ) {
 				stateOfPlay = stateOfPlay.concat( " (" + game.getPeriodDescriptor().getPeriodType() + ")" );
 			}
 			break;
@@ -118,6 +122,37 @@ public class FormatHelper {
 			break;
 		}
 		return stateOfPlay;
+	}
+
+	private static String currentGameScore( Game game ) {
+		String scoreString;
+		switch( game.getGameScheduleState() ) {
+		case "OK":
+			switch( game.getGameState() ) {
+			case "LIVE":
+			case "OFF":
+			case "FINAL":
+				StringBuilder builder = new StringBuilder();
+				builder.append( " " );
+				builder.append( game.getAwayTeam().getScore().toString() );
+				builder.append( " - " );
+				builder.append( game.getHomeTeam().getScore().toString() );
+				builder.append( " " );
+				scoreString = builder.toString();
+				break;
+			case "FUT":
+			case "PRE":
+			default:
+				scoreString = " vs ";
+				break;
+			}
+			break;
+		case "PPD":
+		default:
+			scoreString = " vs ";
+			break;
+		}
+		return scoreString;
 	}
 
 }
