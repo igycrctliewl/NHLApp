@@ -15,6 +15,7 @@ public class FormatHelper {
 	private static final Log logger = LogFactory.getLog( FormatHelper.class );
 	private static final DateTimeFormatter TIME_DISPLAY = DateTimeFormatter.ofPattern( "h:mma" );
 	private static final TeamNamesService teamNamesService = Launcher.getTeamNamesService();
+
 	/**
 	 * For a given Game object, build a string summarizing the
 	 * vital information for the game.  The short ID is a must.
@@ -27,7 +28,7 @@ public class FormatHelper {
 		builder.append( " - " );
 
 		if( showScores ) {
-			// do one thing
+			builder.append( "show scores" );
 		} else {
 			builder.append( teamNamesService.getPlaceName( game.getAwayTeam().getAbbrev() ) );
 			builder.append( " vs " );

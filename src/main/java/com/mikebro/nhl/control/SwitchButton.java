@@ -1,5 +1,7 @@
 package com.mikebro.nhl.control;
 
+import java.util.function.Consumer;
+
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -40,7 +42,8 @@ public class SwitchButton extends StackPane {
 		button.setStyle(buttonStyleOff);
 	}
 
-	public SwitchButton() {
+
+	public SwitchButton( Consumer<Boolean> bubbleFn ) {
 		init();
 		EventHandler<Event> click = new EventHandler<Event>() {
 			@Override
@@ -56,6 +59,7 @@ public class SwitchButton extends StackPane {
 					setAlignment(button, Pos.CENTER_RIGHT);
 					state = true;
 				}
+				bubbleFn.accept( state );
 			}
 		};
 

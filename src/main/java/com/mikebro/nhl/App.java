@@ -1,5 +1,8 @@
 package com.mikebro.nhl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -33,6 +36,7 @@ public class App extends Application {
 	private static double labelY = 20.0;
 	private static double yIncrement = 30.0;
 
+	private Map<Integer,GameStatus> gameStatusMap;
 
 	@Override
 	public void start( Stage primaryStage ) {
@@ -49,17 +53,18 @@ public class App extends Application {
 		root.getChildren().add( showLabel );
 
 
-		SwitchButton showScores = new SwitchButton();
+		SwitchButton showScores = new SwitchButton( show -> refresh( show ) );
 		showScores.setLayoutX( 450 );
 		showScores.setLayoutY( labelY );
 		labelY += yIncrement;
 		root.getChildren().add( showScores );
 
-
+		gameStatusMap = new HashMap<>();
 		Schedule schedule = nhlService.getTodaySchedule();
 
 		for( Game game : schedule.getGames() ) {
 			GameStatus stat = new GameStatus( FormatHelper.buildGameString( game, showScores.getState() ) );
+			gameStatusMap.put( game.getId(), stat );
 			stat.setLayoutX( labelX );
 			stat.setLayoutY( labelY );
 			labelY += yIncrement;
@@ -72,4 +77,15 @@ public class App extends Application {
 		primaryStage.setScene( scene );
 		primaryStage.show();
 	}
+
+
+	public void refresh( boolean showScores ) {
+		logger.info( "refresh with showScores " + ( showScores ? "true" : "false" ) );
+		Schedule schedule = nhlService.getTodaySchedule();
+		for( Game game : schedule.getGames() ) {
+			GameStatus stat = gameStatusMap.get( game.getId() );
+			stat.setText( FormatHelper.buildGameString( game, showScores ) );
+		}
+	}
+
 }
