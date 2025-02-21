@@ -84,6 +84,7 @@ public class FormatHelper {
 			stateOfPlay = "Pre-Game";
 			break;
 		case "LIVE":
+		case "CRIT":
 			stateOfPlay = gamePeriodState( game, showScores );
 			break;
 		case "OFF":
@@ -110,7 +111,12 @@ public class FormatHelper {
 		case "REG":
 		case "OT":
 			if( showScores ) {
-				stateOfPlay = "Period " + desc.getNumber().toString() + " (" + game.getClock().getTimeRemaining() + ")";
+				stateOfPlay = "Period " + desc.getNumber().toString();
+				if( game.getClock().isInIntermission() ) {
+					stateOfPlay = stateOfPlay + " (Intermission)";
+				} else {
+					stateOfPlay = stateOfPlay + " (" + game.getClock().getTimeRemaining() + ")";
+				}
 			} else {
 				stateOfPlay = "In-progress";
 			}
@@ -130,6 +136,7 @@ public class FormatHelper {
 		case "OK":
 			switch( game.getGameState() ) {
 			case "LIVE":
+			case "CRIT":
 			case "OFF":
 			case "FINAL":
 				StringBuilder builder = new StringBuilder();

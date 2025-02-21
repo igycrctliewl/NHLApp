@@ -13,8 +13,8 @@
     </Appenders>
 
     <Loggers>
-        <Logger name="com.mikebro.nhl" level="debug" additivity="true" />
-        <Root level="info">
+        <Logger name="com.mikebro.nhl" level="error" additivity="true" />
+        <Root level="error">
             <AppenderRef ref="MBConsoleLog"/>
         </Root>
     </Loggers>

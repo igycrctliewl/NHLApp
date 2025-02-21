@@ -14,6 +14,7 @@ import com.mikebro.nhl.json.Schedule;
 import com.mikebro.nhl.service.NHLService;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -73,7 +74,7 @@ public class App extends Application {
 			root.getChildren().add( stat );
 		}
 
-		Timer timer = new Timer( 15000, event -> refresh( showScores.getState() ) );
+		Timer timer = new Timer( 15000, event -> callRefresh( showScores.getState() ) );
 		timer.start();
 
 		Scene scene = new Scene( root, sceneWidth, sceneHeight );
@@ -82,6 +83,10 @@ public class App extends Application {
 		primaryStage.show();
 	}
 
+
+	public void callRefresh( boolean showScores ) {
+		Platform.runLater( () -> refresh( showScores ) );
+	}
 
 	public void refresh( boolean showScores ) {
 		logger.info( "refresh with showScores " + ( showScores ? "true" : "false" ) );
