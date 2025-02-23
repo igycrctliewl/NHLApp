@@ -37,7 +37,7 @@ public class GameStatus extends HBox {
 		textLabel.setTooltip( new Tooltip( "game label tooltip" ) );
 		textLabel.setFont( new Font( "Verdana", 16.0 ) );
 		textLabel.setPrefHeight( 25.0 );
-		textLabel.setPrefWidth( 450.0 );
+		textLabel.setPrefWidth( 550.0 );
 		//logger.info( String.format( "textfield height: %s  width: %s", textLabel.getHeight(), textLabel.getWidth() ) );
 	}
 

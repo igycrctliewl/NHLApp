@@ -33,7 +33,7 @@ public class App extends Application {
 
 	private NHLService nhlService;
 
-	private static double sceneWidth = 500.0;
+	private static double sceneWidth = 575.0;
 	private static double sceneHeight = 500.0;
 	private static double labelX = 20.0;
 	private static double labelY = 20.0;
@@ -51,13 +51,13 @@ public class App extends Application {
 		showLabel.setText( "Show Scores" );
 		showLabel.setFont( new Font( "Verdana", 10.0 ) );
 		showLabel.setPrefHeight( 20.0 );
-		showLabel.setLayoutX( 375 );
+		showLabel.setLayoutX( 425 );
 		showLabel.setLayoutY( labelY - 2 );
 		root.getChildren().add( showLabel );
 
 
 		SwitchButton showScores = new SwitchButton( show -> refresh( show ) );
-		showScores.setLayoutX( 450 );
+		showScores.setLayoutX( 500 );
 		showScores.setLayoutY( labelY );
 		labelY += yIncrement;
 		root.getChildren().add( showScores );
@@ -77,6 +77,11 @@ public class App extends Application {
 		Timer timer = new Timer( 15000, event -> callRefresh( showScores.getState() ) );
 		timer.start();
 
+		if( sceneHeight > (labelY + yIncrement) ) {
+			// height is good
+		} else {
+			sceneHeight = labelY + yIncrement; 
+		}
 		Scene scene = new Scene( root, sceneWidth, sceneHeight );
 		primaryStage.setTitle( "NHLApp" );
 		primaryStage.setScene( scene );
