@@ -1,6 +1,7 @@
 package com.mikebro.nhl.format;
 
 import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -10,9 +11,9 @@ import com.mikebro.nhl.json.Game;
 import com.mikebro.nhl.json.PeriodDescriptor;
 import com.mikebro.nhl.service.TeamNamesService;
 
-public class FormatHelper {
+public class GameStatusHelper {
 
-	private static final Log logger = LogFactory.getLog( FormatHelper.class );
+	private static final Log logger = LogFactory.getLog( GameStatusHelper.class );
 	private static final DateTimeFormatter TIME_DISPLAY = DateTimeFormatter.ofPattern( "h:mma" );
 	private static final TeamNamesService teamNamesService = Launcher.getTeamNamesService();
 
@@ -42,6 +43,21 @@ public class FormatHelper {
 		}
 
 		return builder.toString();
+	}
+
+
+	/**
+	 * For a given Game object, build a string summarizing the
+	 * TV networks broadcasting the game.
+	 */
+	public static String buildToolTip( Game game ) {
+		if( game.getTvBroadcasts() == null || game.getTvBroadcasts().size() == 0 ) {
+			return "No TV broadcast info";
+		} else {
+			return game.getTvBroadcasts().stream()
+				.map( tv -> tv.getNetwork() )
+				.collect( Collectors.joining(", ") );
+		}
 	}
 
 

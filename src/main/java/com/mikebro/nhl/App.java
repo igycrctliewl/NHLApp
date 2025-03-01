@@ -8,7 +8,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.mikebro.nhl.control.GameStatus;
 import com.mikebro.nhl.control.SwitchButton;
-import com.mikebro.nhl.format.FormatHelper;
+import com.mikebro.nhl.format.GameStatusHelper;
 import com.mikebro.nhl.json.Game;
 import com.mikebro.nhl.json.Schedule;
 import com.mikebro.nhl.service.NHLService;
@@ -66,7 +66,8 @@ public class App extends Application {
 		Schedule schedule = nhlService.getTodaySchedule();
 
 		for( Game game : schedule.getGames() ) {
-			GameStatus stat = new GameStatus( FormatHelper.buildGameString( game, showScores.getState() ) );
+			GameStatus stat = new GameStatus( GameStatusHelper.buildGameString( game, showScores.getState() ) );
+			stat.setTooltip( GameStatusHelper.buildToolTip( game ) );
 			gameStatusMap.put( game.getId(), stat );
 			stat.setLayoutX( labelX );
 			stat.setLayoutY( labelY );
@@ -98,7 +99,7 @@ public class App extends Application {
 		Schedule schedule = nhlService.getTodaySchedule();
 		for( Game game : schedule.getGames() ) {
 			GameStatus stat = gameStatusMap.get( game.getId() );
-			stat.setText( FormatHelper.buildGameString( game, showScores ) );
+			stat.setText( GameStatusHelper.buildGameString( game, showScores ) );
 		}
 	}
 

@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 public class GameStatus extends HBox {
 
@@ -30,11 +31,16 @@ public class GameStatus extends HBox {
 		textLabel.setText( newText );
 	}
 
+	public void setTooltip( String newTooltip ) {
+		Tooltip tip = new Tooltip( newTooltip );
+		tip.setHideDelay( Duration.millis( 10000 ) );
+		textLabel.setTooltip( tip );
+	}
+
 
 	private void createText( String textString ) {
 		textLabel = new Label();
 		textLabel.setText( textString );
-		textLabel.setTooltip( new Tooltip( "game label tooltip" ) );
 		textLabel.setFont( new Font( "Verdana", 16.0 ) );
 		textLabel.setPrefHeight( 25.0 );
 		textLabel.setPrefWidth( 550.0 );
