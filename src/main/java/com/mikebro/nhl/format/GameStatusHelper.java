@@ -137,6 +137,13 @@ public class GameStatusHelper {
 				stateOfPlay = "In-progress";
 			}
 			break;
+		case "SO":
+			if( showScores ) {
+				stateOfPlay = "(Shoot-out in progress)";
+			} else {
+				stateOfPlay = "In-progress";
+			}
+			break;
 		default:
 			// log the unknown periodType value
 			logger.error( String.format( "Unknown periodType value >%s< for game %s", desc.getPeriodType(), game.getId() ) );

@@ -1,0 +1,17 @@
+Defect : There is a period-type value "SO" that is used to indicate a reg-season shoot-out
+
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+18:48:05.682 : ERROR: com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:142) - Unknown periodType value >SO< for game 2024020956
+18:48:20.647 : ERROR: com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:142) - Unknown periodType value >SO< for game 2024020956
+18:48:35.623 : ERROR: com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:142) - Unknown periodType value >SO< for game 2024020956
+18:48:50.711 : ERROR: com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:142) - Unknown periodType value >SO< for game 2024020956
+18:49:05.711 : ERROR: com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:142) - Unknown periodType value >SO< for game 2024020956
+18:49:20.668 : ERROR: com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:142) - Unknown periodType value >SO< for game 2024020956
+18:49:35.640 : ERROR: com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:142) - Unknown periodType value >SO< for game 2024020956
+18:49:51.072 : ERROR: com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:142) - Unknown periodType value >SO< for game 2024020956
+18:50:05.656 : ERROR: com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:142) - Unknown periodType value >SO< for game 2024020956
+18:50:20.653 : ERROR: com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:142) - Unknown periodType value >SO< for game 2024020956
+18:50:35.634 : ERROR: com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:142) - Unknown periodType value >SO< for game 2024020956
+18:50:50.642 : ERROR: com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:142) - Unknown periodType value >SO< for game 2024020956
+18:51:05.667 : ERROR: com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:142) - Unknown periodType value >SO< for game 2024020956
+18:51:20.629 : ERROR: com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:142) - Unknown periodType value >SO< for game 2024020956
