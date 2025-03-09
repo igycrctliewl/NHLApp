@@ -38,12 +38,12 @@ public class NHLApp extends Application {
 
 	private NHLService nhlService;
 
-	private static double sceneWidth = 575.0;
-	private static double sceneHeight = 500.0;
-	private static double labelX = 20.0;
-	private static double labelY = 20.0;
-	private static double rowHeight = 40.0;
-	private static double yIncrement = 30.0;
+	private double sceneWidth = 575.0;
+	private double sceneHeight = 500.0;
+	private double labelX = 20.0;
+	private double labelY = 20.0;
+	private double rowHeight = 40.0;
+	private double yIncrement = 30.0;
 
 	private Map<Integer,GameStatus> gameStatusMap;
 
@@ -65,6 +65,7 @@ public class NHLApp extends Application {
 		togglePane.setLayoutY( labelY - 2 );
 		togglePane.setPrefHeight( rowHeight );
 		togglePane.setPrefWidth( 135 );
+		createShowScoresToggle( togglePane );
 
 		Pane hbox1 = new HBox( navigationPane, togglePane );
 		hbox1.setStyle( BORDER_STYLE );
@@ -94,4 +95,31 @@ public class NHLApp extends Application {
 	}
 
 
+	private void createShowScoresToggle( Pane pane ) {
+		Label showLabel = new Label();
+		showLabel.setText( "Show Scores" );
+		showLabel.setFont( new Font( "Verdana", 10.0 ) );
+		showLabel.setPrefHeight( 20.0 );
+		showLabel.setLayoutX( 10 );
+		showLabel.setLayoutY( 10 );
+		pane.getChildren().add( showLabel );
+
+		SwitchButton showScores = new SwitchButton( show -> refresh( show ) );
+		showScores.setLayoutX( 85 );
+		showScores.setLayoutY( 12.5 );
+		pane.getChildren().add( showScores );
+	}
+
+	public void callRefresh( boolean showScores ) {
+		Platform.runLater( () -> refresh( showScores ) );
+	}
+
+	public void refresh( boolean showScores ) {
+		logger.info( "refresh (disabled) with showScores " + ( showScores ? "true" : "false" ) );
+/*		Schedule schedule = nhlService.getTodaySchedule();
+		for( Game game : schedule.getGames() ) {
+			GameStatus stat = gameStatusMap.get( game.getId() );
+			stat.setText( GameStatusHelper.buildGameString( game, showScores ) );
+		}
+*/	}
 }
