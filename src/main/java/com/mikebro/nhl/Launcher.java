@@ -50,7 +50,7 @@ public class Launcher {
 			logger.error( e.getMessage(), e );
 		}
 
-		Application.launch( App.class, args );
+		Application.launch( NHLApp.class, args );
 
 		context.close();
 		logger.info( "Launcher.main exit" );
