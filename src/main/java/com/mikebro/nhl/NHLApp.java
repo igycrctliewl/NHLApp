@@ -6,8 +6,10 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.mikebro.nhl.control.GameDayPane;
 import com.mikebro.nhl.control.GameStatus;
 import com.mikebro.nhl.control.SwitchButton;
+import com.mikebro.nhl.format.DateTimeFormat;
 import com.mikebro.nhl.format.GameStatusHelper;
 import com.mikebro.nhl.json.Game;
 import com.mikebro.nhl.json.Schedule;
@@ -45,12 +47,15 @@ public class NHLApp extends Application {
 	private double rowHeight = 40.0;
 	private double yIncrement = 30.0;
 
+	private SwitchButton showScores;
+
 	private Map<Integer,GameStatus> gameStatusMap;
 
 	private Insets bottomPad = new Insets(0, 0, 0, 0);
 
 	@Override
 	public void start( Stage primaryStage ) {
+		nhlService = Launcher.getNHLService();
 
 		Pane navigationPane = new Pane();
 		navigationPane.setStyle( BORDER_STYLE );
@@ -73,10 +78,15 @@ public class NHLApp extends Application {
 		hbox1.setLayoutY( 10 );
 		hbox1.setPadding( bottomPad );
 
+		// TODO: the height and width of gameStatusPane should be derived
+		// from the dimensions of gameDayPane
 		Pane gameStatusPane = new Pane();
 		gameStatusPane.setStyle( BORDER_STYLE );
 		gameStatusPane.setPrefHeight( sceneHeight - 65 );
 		gameStatusPane.setPrefWidth( sceneWidth - 20 );
+		Schedule todaySchedule = nhlService.getTodaySchedule();
+		GameDayPane gameDayPane = new GameDayPane( todaySchedule, this );
+		gameStatusPane.getChildren().add( gameDayPane );
 
 		Pane vbox1 = new VBox( hbox1, gameStatusPane );
 		vbox1.setLayoutX( 10 );
@@ -86,14 +96,19 @@ public class NHLApp extends Application {
 		Pane root = new Pane();
 		root.getChildren().add( vbox1 );
 
-
+		// TODO: the minimum height of the main scene should be the height
+		// of gameDayPane + 65 or 500
 		Scene scene = new Scene( root, sceneWidth, sceneHeight );
-		primaryStage.setTitle( "NHLApp" );
+		primaryStage.setTitle( "NHLApp - " + DateTimeFormat.getFormattedDate( todaySchedule.getCurrentDate() ) );
 		primaryStage.setScene( scene );
 		primaryStage.show();
 
 	}
 
+
+	public SwitchButton getShowScores() {
+		return showScores;
+	}
 
 	private void createShowScoresToggle( Pane pane ) {
 		Label showLabel = new Label();
@@ -104,7 +119,7 @@ public class NHLApp extends Application {
 		showLabel.setLayoutY( 10 );
 		pane.getChildren().add( showLabel );
 
-		SwitchButton showScores = new SwitchButton( show -> refresh( show ) );
+		showScores = new SwitchButton( show -> refresh( show ) );
 		showScores.setLayoutX( 85 );
 		showScores.setLayoutY( 12.5 );
 		pane.getChildren().add( showScores );
@@ -114,12 +129,17 @@ public class NHLApp extends Application {
 		Platform.runLater( () -> refresh( showScores ) );
 	}
 
+
+	/**
+	 * TODO: this needs to be refactored so that the refresh actions are all encapsulated within GameDayPane
+	 * @param showScores
+	 */
 	public void refresh( boolean showScores ) {
 		logger.info( "refresh (disabled) with showScores " + ( showScores ? "true" : "false" ) );
-/*		Schedule schedule = nhlService.getTodaySchedule();
+		Schedule schedule = nhlService.getTodaySchedule();
 		for( Game game : schedule.getGames() ) {
 			GameStatus stat = gameStatusMap.get( game.getId() );
 			stat.setText( GameStatusHelper.buildGameString( game, showScores ) );
 		}
-*/	}
+	}
 }
