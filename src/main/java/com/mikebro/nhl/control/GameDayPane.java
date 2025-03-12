@@ -9,7 +9,6 @@ import javax.swing.Timer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.mikebro.nhl.App;
 import com.mikebro.nhl.Launcher;
 import com.mikebro.nhl.NHLApp;
 import com.mikebro.nhl.format.GameStatusHelper;
@@ -18,12 +17,7 @@ import com.mikebro.nhl.json.Schedule;
 import com.mikebro.nhl.service.NHLService;
 
 import javafx.application.Platform;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 public class GameDayPane extends Pane {
 
@@ -31,22 +25,20 @@ public class GameDayPane extends Pane {
 
 	private NHLService nhlService;
 	private LocalDate currentDate;
+	private Timer timer;
+	private Map<Integer,GameStatus> gameStatusMap;
+
 	private double sceneWidth = 575.0;
 	private double sceneHeight = 400.0;
 	private double labelX = 20.0;
 	private double labelY = 20.0;
 	private double yIncrement = 30.0;
 
-	private Map<Integer,GameStatus> gameStatusMap;
-
 
 	public GameDayPane( Schedule schedule, NHLApp app ) {
 		super();
-
-		this.currentDate = schedule.getCurrentDate();
 		nhlService = Launcher.getNHLService();
-
-
+		currentDate = schedule.getCurrentDate();
 		gameStatusMap = new HashMap<>();
 	
 		for( Game game : schedule.getGames() ) {
@@ -59,7 +51,7 @@ public class GameDayPane extends Pane {
 			this.getChildren().add( stat );
 		}
 
-		Timer timer = new Timer( 15000, event -> callRefresh( app.getShowScores().getState() ) );
+		timer = new Timer( 15000, event -> callRefresh( app.getShowScores().getState() ) );
 		timer.start();
 
 		if( sceneHeight > (labelY + yIncrement) ) {
@@ -90,4 +82,18 @@ public class GameDayPane extends Pane {
 		}
 	}
 
+
+	/**
+	 * Stop the internal refresh timer for this GameDayPane
+	 */
+	public void hibernate() {
+		timer.stop();
+	}
+
+	/**
+	 * Restart the internal refresh timer for this GameDayPane
+	 */
+	public void wakeup() {
+		timer.restart();
+	}
 }

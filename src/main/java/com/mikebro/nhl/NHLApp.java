@@ -48,8 +48,7 @@ public class NHLApp extends Application {
 	private double yIncrement = 30.0;
 
 	private SwitchButton showScores;
-
-	private Map<Integer,GameStatus> gameStatusMap;
+	private GameDayPane gameDayPane;
 
 	private Insets bottomPad = new Insets(0, 0, 0, 0);
 
@@ -85,7 +84,7 @@ public class NHLApp extends Application {
 		gameStatusPane.setPrefHeight( sceneHeight - 65 );
 		gameStatusPane.setPrefWidth( sceneWidth - 20 );
 		Schedule todaySchedule = nhlService.getTodaySchedule();
-		GameDayPane gameDayPane = new GameDayPane( todaySchedule, this );
+		gameDayPane = new GameDayPane( todaySchedule, this );
 		gameStatusPane.getChildren().add( gameDayPane );
 
 		Pane vbox1 = new VBox( hbox1, gameStatusPane );
@@ -125,21 +124,9 @@ public class NHLApp extends Application {
 		pane.getChildren().add( showScores );
 	}
 
-	public void callRefresh( boolean showScores ) {
-		Platform.runLater( () -> refresh( showScores ) );
-	}
 
-
-	/**
-	 * TODO: this needs to be refactored so that the refresh actions are all encapsulated within GameDayPane
-	 * @param showScores
-	 */
 	public void refresh( boolean showScores ) {
-		logger.info( "refresh (disabled) with showScores " + ( showScores ? "true" : "false" ) );
-		Schedule schedule = nhlService.getTodaySchedule();
-		for( Game game : schedule.getGames() ) {
-			GameStatus stat = gameStatusMap.get( game.getId() );
-			stat.setText( GameStatusHelper.buildGameString( game, showScores ) );
-		}
+		logger.info( "refresh with showScores " + ( showScores ? "true" : "false" ) );
+		gameDayPane.refresh( showScores );
 	}
 }
