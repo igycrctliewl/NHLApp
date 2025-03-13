@@ -24,9 +24,13 @@ public class GameDayPane extends Pane {
 	private static final Log logger = LogFactory.getLog( GameDayPane.class );
 
 	private NHLService nhlService;
-	private LocalDate currentDate;
+	private LocalDate gameDate;
+	private LocalDate prevDate;
+	private LocalDate nextDate;
 	private Timer timer;
 	private Map<Integer,GameStatus> gameStatusMap;
+	private GameDayPane prevDayPane;
+	private GameDayPane nextDayPane;
 
 	private double sceneWidth = 575.0;
 	private double sceneHeight = 400.0;
@@ -35,10 +39,45 @@ public class GameDayPane extends Pane {
 	private double yIncrement = 30.0;
 
 
+	public double getSceneWidth() {
+		return sceneWidth;
+	}
+
+	public double getSceneHeight() {
+		return sceneHeight;
+	}
+
+	public GameDayPane getPrevDayPane() {
+		return prevDayPane;
+	}
+
+	public void setPrevDayPane(GameDayPane prevDayPane) {
+		this.prevDayPane = prevDayPane;
+	}
+
+	public GameDayPane getNextDayPane() {
+		return nextDayPane;
+	}
+
+	public void setNextDayPane(GameDayPane nextDayPane) {
+		this.nextDayPane = nextDayPane;
+	}
+
+	public LocalDate getPrevDate() {
+		return prevDate;
+	}
+
+	public LocalDate getNextDate() {
+		return nextDate;
+	}
+
+
 	public GameDayPane( Schedule schedule, NHLApp app ) {
 		super();
 		nhlService = Launcher.getNHLService();
-		currentDate = schedule.getCurrentDate();
+		gameDate = schedule.getCurrentDate();
+		prevDate = schedule.getPrevDate();
+		nextDate = schedule.getNextDate();
 		gameStatusMap = new HashMap<>();
 	
 		for( Game game : schedule.getGames() ) {
@@ -61,21 +100,13 @@ public class GameDayPane extends Pane {
 		}
 	}
 
-	public double getSceneWidth() {
-		return sceneWidth;
-	}
-
-	public double getSceneHeight() {
-		return sceneHeight;
-	}
-
 	public void callRefresh( boolean showScores ) {
 		Platform.runLater( () -> refresh( showScores ) );
 	}
 
 	public void refresh( boolean showScores ) {
 		logger.info( "refresh with showScores " + ( showScores ? "true" : "false" ) );
-		Schedule schedule = nhlService.getSchedule( currentDate );
+		Schedule schedule = nhlService.getSchedule( gameDate );
 		for( Game game : schedule.getGames() ) {
 			GameStatus stat = gameStatusMap.get( game.getId() );
 			stat.setText( GameStatusHelper.buildGameString( game, showScores ) );

@@ -49,6 +49,10 @@ public class NHLApp extends Application {
 	private double sceneHeight = 500.0;
 	private double rowHeight = 40.0;
 
+	private Label goToPrevious;
+	private Label goToToday;
+	private Label goToNext;
+
 	private SwitchButton showScores;
 	private GameDayPane gameDayPane;
 
@@ -60,27 +64,30 @@ public class NHLApp extends Application {
 		nhlService = Launcher.getNHLService();
 		Schedule todaySchedule = nhlService.getTodaySchedule();
 
-		Label goToPrevious = new Label();
+		goToPrevious = new Label();
 		goToPrevious.setText( "<-- " + getFormattedDate( todaySchedule.getPrevDate() ));
 		goToPrevious.setFont( NAV_LBL_FONT );
 		goToPrevious.setPrefHeight( NAV_LBL_HEIGHT );
 		goToPrevious.setPrefWidth( NAV_LBL_WIDTH );
 		goToPrevious.setPadding( bothSidesPad );
+		goToPrevious.setOnMouseClicked( event -> navigateToPrevious() );
 
-		Label goToToday = new Label();
+		goToToday = new Label();
 		goToToday.setText( "Today" );
 		goToToday.setFont( NAV_LBL_FONT );
 		goToToday.setPrefHeight( NAV_LBL_HEIGHT );
 		goToToday.setPadding( bothSidesPad );
 		// goToToday label is hidden until it is needed
 		goToToday.setVisible( false );
+		goToToday.setOnMouseClicked( event -> navigateToToday() );
 
-		Label goToNext = new Label();
+		goToNext = new Label();
 		goToNext.setText( getFormattedDate( todaySchedule.getNextDate() ) + " -->" );
 		goToNext.setFont( NAV_LBL_FONT );
 		goToNext.setPrefHeight( NAV_LBL_HEIGHT );
 		goToNext.setPrefWidth( NAV_LBL_WIDTH );
 		goToNext.setPadding( bothSidesPad );
+		goToNext.setOnMouseClicked( event -> navigateToNext() );
 
 		Pane navigationPane = new HBox( goToPrevious, goToToday, goToNext );
 		navigationPane.setLayoutX( 20.0 );
@@ -90,7 +97,7 @@ public class NHLApp extends Application {
 
 
 		Pane togglePane = new Pane();
-		togglePane.setStyle( BORDER_STYLE );
+		//togglePane.setStyle( BORDER_STYLE );
 		togglePane.setLayoutX( 425 );
 		togglePane.setLayoutY( 20.0 - 2 );
 		togglePane.setPrefHeight( rowHeight );
@@ -153,5 +160,21 @@ public class NHLApp extends Application {
 	public void refresh( boolean showScores ) {
 		logger.info( "refresh with showScores " + ( showScores ? "true" : "false" ) );
 		gameDayPane.refresh( showScores );
+	}
+
+
+	private void navigateToPrevious() {
+		logger.info( "navigate to previous date" );
+		goToToday.setVisible( true );
+	}
+
+	private void navigateToToday() {
+		logger.info( "navigate to today's date" );
+		goToToday.setVisible( false );
+	}
+
+	private void navigateToNext() {
+		logger.info( "navigate to next date" );
+		goToToday.setVisible( true );
 	}
 }
