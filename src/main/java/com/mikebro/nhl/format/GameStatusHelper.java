@@ -134,14 +134,14 @@ public class GameStatusHelper {
 					stateOfPlay = stateOfPlay + " (" + game.getClock().getTimeRemaining() + ")";
 				}
 			} else {
-				stateOfPlay = "In-progress";
+				stateOfPlay = "In progress";
 			}
 			break;
 		case "SO":
 			if( showScores ) {
 				stateOfPlay = "(Shoot-out in progress)";
 			} else {
-				stateOfPlay = "In-progress";
+				stateOfPlay = "In progress";
 			}
 			break;
 		default:

@@ -2,34 +2,23 @@ package com.mikebro.nhl;
 
 import static com.mikebro.nhl.format.DateTimeFormat.getFormattedDate;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDate;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.mikebro.nhl.control.GameDayPane;
-import com.mikebro.nhl.control.GameStatus;
 import com.mikebro.nhl.control.SwitchButton;
 
-import com.mikebro.nhl.format.GameStatusHelper;
-import com.mikebro.nhl.json.Game;
-import com.mikebro.nhl.json.Schedule;
-import com.mikebro.nhl.service.NHLService;
-
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-import javax.swing.Timer;
 
 /**
  *
@@ -42,8 +31,6 @@ public class NHLApp extends Application {
 	private static final String BORDER_STYLE = "-fx-border-color: BLACK; -fx-border-width: 2";
 	private static final double NAV_LBL_HEIGHT = 40.0;
 	private static final double NAV_LBL_WIDTH = 160.0;
-
-	private NHLService nhlService;
 
 	private double sceneWidth = 575.0;
 	private double sceneHeight = 500.0;
@@ -61,11 +48,23 @@ public class NHLApp extends Application {
 
 	@Override
 	public void start( Stage primaryStage ) {
-		nhlService = Launcher.getNHLService();
-		Schedule todaySchedule = nhlService.getTodaySchedule();
+
+		/* When we call GameDayPane constructor, we pass this object.
+		 * This object is used to obtain the current setting of the show-scores toggle.
+		 * Therefore, show-scores toggle must be created before we call the constructor.
+		 */
+		Pane togglePane = new Pane();
+		//togglePane.setStyle( BORDER_STYLE );
+		togglePane.setLayoutX( 425 );
+		togglePane.setLayoutY( 20.0 - 2 );
+		togglePane.setPrefHeight( rowHeight );
+		togglePane.setPrefWidth( 135 );
+		createShowScoresToggle( togglePane );
+
+		gameDayPane = new GameDayPane( LocalDate.now(), this );
 
 		goToPrevious = new Label();
-		goToPrevious.setText( "<-- " + getFormattedDate( todaySchedule.getPrevDate() ));
+		goToPrevious.setText( "<-- " + getFormattedDate( gameDayPane.getPrevDate() ));
 		goToPrevious.setFont( NAV_LBL_FONT );
 		goToPrevious.setPrefHeight( NAV_LBL_HEIGHT );
 		goToPrevious.setPrefWidth( NAV_LBL_WIDTH );
@@ -82,7 +81,7 @@ public class NHLApp extends Application {
 		goToToday.setOnMouseClicked( event -> navigateToToday() );
 
 		goToNext = new Label();
-		goToNext.setText( getFormattedDate( todaySchedule.getNextDate() ) + " -->" );
+		goToNext.setText( getFormattedDate( gameDayPane.getNextDate() ) + " -->" );
 		goToNext.setFont( NAV_LBL_FONT );
 		goToNext.setPrefHeight( NAV_LBL_HEIGHT );
 		goToNext.setPrefWidth( NAV_LBL_WIDTH );
@@ -96,14 +95,6 @@ public class NHLApp extends Application {
 		navigationPane.setPrefWidth( 415 );
 
 
-		Pane togglePane = new Pane();
-		//togglePane.setStyle( BORDER_STYLE );
-		togglePane.setLayoutX( 425 );
-		togglePane.setLayoutY( 20.0 - 2 );
-		togglePane.setPrefHeight( rowHeight );
-		togglePane.setPrefWidth( 135 );
-		createShowScoresToggle( togglePane );
-
 		Pane hbox1 = new HBox( navigationPane, togglePane );
 		hbox1.setStyle( BORDER_STYLE );
 		hbox1.setLayoutX( 10 );
@@ -116,7 +107,6 @@ public class NHLApp extends Application {
 		gameStatusPane.setStyle( BORDER_STYLE );
 		gameStatusPane.setPrefHeight( sceneHeight - 65 );
 		gameStatusPane.setPrefWidth( sceneWidth - 20 );
-		gameDayPane = new GameDayPane( todaySchedule, this );
 		gameStatusPane.getChildren().add( gameDayPane );
 
 		Pane vbox1 = new VBox( hbox1, gameStatusPane );
@@ -130,7 +120,7 @@ public class NHLApp extends Application {
 		// TODO: the minimum height of the main scene should be the height
 		// of gameDayPane + 65 or 500
 		Scene scene = new Scene( root, sceneWidth, sceneHeight );
-		primaryStage.setTitle( "NHLApp - " + getFormattedDate( todaySchedule.getCurrentDate() ) );
+		primaryStage.setTitle( "NHLApp - " + getFormattedDate( gameDayPane.getGameDate() ) );
 		primaryStage.setScene( scene );
 		primaryStage.show();
 

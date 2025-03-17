@@ -63,6 +63,10 @@ public class GameDayPane extends Pane {
 		this.nextDayPane = nextDayPane;
 	}
 
+	public LocalDate getGameDate() {
+		return gameDate;
+	}
+
 	public LocalDate getPrevDate() {
 		return prevDate;
 	}
@@ -72,9 +76,10 @@ public class GameDayPane extends Pane {
 	}
 
 
-	public GameDayPane( Schedule schedule, NHLApp app ) {
+	public GameDayPane( LocalDate requestedDate, NHLApp app ) {
 		super();
 		nhlService = Launcher.getNHLService();
+		Schedule schedule = nhlService.getSchedule( requestedDate );
 		gameDate = schedule.getCurrentDate();
 		prevDate = schedule.getPrevDate();
 		nextDate = schedule.getNextDate();
