@@ -35,7 +35,7 @@ public class GameDayPane extends Pane {
 	private double sceneWidth = 575.0;
 	private double sceneHeight = 400.0;
 	private double labelX = 20.0;
-	private double labelY = 20.0;
+	private double labelY = 5.0;
 	private double yIncrement = 30.0;
 
 
@@ -110,7 +110,7 @@ public class GameDayPane extends Pane {
 	}
 
 	public void refresh( boolean showScores ) {
-		logger.info( "refresh with showScores " + ( showScores ? "true" : "false" ) );
+		logger.info( "refresh " + this.gameDate + " with showScores " + ( showScores ? "true" : "false" ) );
 		Schedule schedule = nhlService.getSchedule( gameDate );
 		for( Game game : schedule.getGames() ) {
 			GameStatus stat = gameStatusMap.get( game.getId() );

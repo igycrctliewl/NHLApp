@@ -3,6 +3,8 @@ package com.mikebro.nhl;
 import static com.mikebro.nhl.format.DateTimeFormat.getFormattedDate;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,7 +30,7 @@ public class NHLApp extends Application {
 
 	private static final Log logger = LogFactory.getLog( NHLApp.class );
 	private static final Font NAV_LBL_FONT = new Font( "Verdana", 12.0 );
-	private static final String BORDER_STYLE = "-fx-border-color: BLACK; -fx-border-width: 2";
+	private static final String BORDER_STYLE = "-fx-border-color: BLACK; -fx-border-width: 0";
 	private static final double NAV_LBL_HEIGHT = 40.0;
 	private static final double NAV_LBL_WIDTH = 160.0;
 
@@ -41,13 +43,17 @@ public class NHLApp extends Application {
 	private Label goToNext;
 
 	private SwitchButton showScores;
+	private Pane gameStatusPane;
 	private GameDayPane gameDayPane;
+	private Map<LocalDate,GameDayPane> gameDayPaneMap;
+	private Stage mainApplicationStage;
 
 	private Insets bottomPad = new Insets(0, 0, 0, 0);
 	private Insets bothSidesPad = new Insets(0, 25, 0, 25);
 
 	@Override
 	public void start( Stage primaryStage ) {
+		mainApplicationStage = primaryStage;
 
 		/* When we call GameDayPane constructor, we pass this object.
 		 * This object is used to obtain the current setting of the show-scores toggle.
@@ -62,6 +68,8 @@ public class NHLApp extends Application {
 		createShowScoresToggle( togglePane );
 
 		gameDayPane = new GameDayPane( LocalDate.now(), this );
+		gameDayPaneMap = new HashMap<>();
+		gameDayPaneMap.put( gameDayPane.getGameDate(), gameDayPane );
 
 		goToPrevious = new Label();
 		goToPrevious.setText( "<-- " + getFormattedDate( gameDayPane.getPrevDate() ));
@@ -76,7 +84,6 @@ public class NHLApp extends Application {
 		goToToday.setFont( NAV_LBL_FONT );
 		goToToday.setPrefHeight( NAV_LBL_HEIGHT );
 		goToToday.setPadding( bothSidesPad );
-		// goToToday label is hidden until it is needed
 		goToToday.setVisible( false );
 		goToToday.setOnMouseClicked( event -> navigateToToday() );
 
@@ -103,7 +110,7 @@ public class NHLApp extends Application {
 
 		// TODO: the height and width of gameStatusPane should be derived
 		// from the dimensions of gameDayPane
-		Pane gameStatusPane = new Pane();
+		gameStatusPane = new Pane();
 		gameStatusPane.setStyle( BORDER_STYLE );
 		gameStatusPane.setPrefHeight( sceneHeight - 65 );
 		gameStatusPane.setPrefWidth( sceneWidth - 20 );
@@ -120,10 +127,9 @@ public class NHLApp extends Application {
 		// TODO: the minimum height of the main scene should be the height
 		// of gameDayPane + 65 or 500
 		Scene scene = new Scene( root, sceneWidth, sceneHeight );
-		primaryStage.setTitle( "NHLApp - " + getFormattedDate( gameDayPane.getGameDate() ) );
-		primaryStage.setScene( scene );
-		primaryStage.show();
-
+		setAppTitle();
+		mainApplicationStage.setScene( scene );
+		mainApplicationStage.show();
 	}
 
 
@@ -153,18 +159,50 @@ public class NHLApp extends Application {
 	}
 
 
+	private void refreshForNavigation( LocalDate newGameDate ) {
+		logger.info( "navigate to " + newGameDate );
+
+		// attempt to get GameDayPane from map
+		// or create a GameDayPane from the previous date
+		GameDayPane navigatingToPane = gameDayPaneMap.get( newGameDate );
+		if( navigatingToPane == null ) {
+			navigatingToPane = new GameDayPane( newGameDate, this );
+			gameDayPaneMap.put( newGameDate, navigatingToPane );
+		}
+
+		// hibernate the current GameDayPane and activate the new GameDayPane
+		gameDayPane.hibernate();
+		navigatingToPane.wakeup();
+
+		// update prev/next label text
+		goToPrevious.setText( "<-- " + getFormattedDate( navigatingToPane.getPrevDate() ));
+		goToToday.setVisible( ! navigatingToPane.getGameDate().equals( LocalDate.now() ) );
+		goToNext.setText( getFormattedDate( navigatingToPane.getNextDate() ) + " -->" );
+
+		// display new GameDayPane
+		gameStatusPane.getChildren().removeAll( gameDayPane );
+		gameDayPane = navigatingToPane;
+		setAppTitle();
+		gameStatusPane.getChildren().add( gameDayPane );
+	}
+
 	private void navigateToPrevious() {
 		logger.info( "navigate to previous date" );
-		goToToday.setVisible( true );
+		refreshForNavigation( gameDayPane.getPrevDate() );
 	}
 
 	private void navigateToToday() {
 		logger.info( "navigate to today's date" );
-		goToToday.setVisible( false );
+		refreshForNavigation( LocalDate.now() );
 	}
 
 	private void navigateToNext() {
 		logger.info( "navigate to next date" );
-		goToToday.setVisible( true );
+		refreshForNavigation( gameDayPane.getNextDate() );
+	}
+
+
+	private void setAppTitle() {
+		mainApplicationStage.setTitle( "NHLApp - " + getFormattedDate( gameDayPane.getGameDate() ) );
 	}
 }
