@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 import javax.swing.Timer;
 
 /**
- *
+ * @deprecated in favor of NHLApp.java
  * @author mikebro
  */
 public class App extends Application {

@@ -5,6 +5,8 @@ import org.apache.commons.logging.LogFactory;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -44,7 +46,14 @@ public class GameStatus extends HBox {
 		textLabel.setFont( new Font( "Verdana", 16.0 ) );
 		textLabel.setPrefHeight( 25.0 );
 		textLabel.setPrefWidth( 550.0 );
-		//logger.info( String.format( "textfield height: %s  width: %s", textLabel.getHeight(), textLabel.getWidth() ) );
+		textLabel.setOnMouseClicked( event -> {
+			logger.info( "copy to clipboard for game " + textLabel.getText().substring( 0, 4 ) );
+			final Clipboard clipboard = Clipboard.getSystemClipboard();
+			final ClipboardContent content = new ClipboardContent();
+			content.putString( textLabel.getText().substring( 0, 4 ) );
+			clipboard.setContent( content );
+		});
+		logger.info( String.format( "textfield height: %s  width: %s", textLabel.getHeight(), textLabel.getWidth() ) );
 	}
 
 }
