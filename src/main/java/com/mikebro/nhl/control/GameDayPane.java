@@ -84,7 +84,15 @@ public class GameDayPane extends Pane {
 		prevDate = schedule.getPrevDate();
 		nextDate = schedule.getNextDate();
 		gameStatusMap = new HashMap<>();
-	
+
+		if( schedule.getGames().size() == 0 ) {
+			GameStatus stat = new GameStatus( "No games" );
+			stat.setLayoutX( labelX );
+			stat.setLayoutY( labelY );
+			labelY += yIncrement;
+			this.getChildren().add( stat );
+		}
+
 		for( Game game : schedule.getGames() ) {
 			GameStatus stat = new GameStatus( GameStatusHelper.buildGameString( game, app.getShowScores().getState() ) );
 			stat.setTooltip( GameStatusHelper.buildToolTip( game ) );
