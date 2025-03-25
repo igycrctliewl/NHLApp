@@ -3,8 +3,10 @@ package com.mikebro.nhl;
 import static com.mikebro.nhl.format.DateTimeFormat.getFormattedDate;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -68,7 +70,10 @@ public class NHLApp extends Application {
 		createShowScoresToggle( togglePane );
 
 		gameDayPane = new GameDayPane( LocalDate.now(), this );
-		gameDayPaneMap = new HashMap<>();
+		final GameDayPane pane = gameDayPane;
+		CompletableFuture.runAsync( () -> preloadPrevNextDay( pane ) );
+
+		gameDayPaneMap = Collections.synchronizedMap( new HashMap<>() );
 		gameDayPaneMap.put( gameDayPane.getGameDate(), gameDayPane );
 
 		goToPrevious = new Label();
@@ -169,6 +174,8 @@ public class NHLApp extends Application {
 			navigatingToPane = new GameDayPane( newGameDate, this );
 			gameDayPaneMap.put( newGameDate, navigatingToPane );
 		}
+		final GameDayPane pane = navigatingToPane;
+		CompletableFuture.runAsync( () -> preloadPrevNextDay( pane ) );
 
 		// hibernate the current GameDayPane and activate the new GameDayPane
 		gameDayPane.hibernate();
@@ -199,6 +206,22 @@ public class NHLApp extends Application {
 	private void navigateToNext() {
 		logger.info( "navigate to next date" );
 		refreshForNavigation( gameDayPane.getNextDate() );
+	}
+
+
+	private void preloadPrevNextDay( GameDayPane gameDay ) {
+		CompletableFuture<Void> prev = CompletableFuture.runAsync( () -> preloadGameDate( gameDay.getPrevDate() ) );
+		CompletableFuture<Void> next = CompletableFuture.runAsync( () -> preloadGameDate( gameDay.getNextDate() ) );
+		CompletableFuture.allOf( prev, next );
+	}
+
+	private void preloadGameDate( LocalDate gameDate ) {
+		logger.info( String.format( "preloading %s", gameDate ));
+		if( gameDayPaneMap.get( gameDate ) == null ) {
+			GameDayPane pane = new GameDayPane( gameDate, this );
+			pane.hibernate();
+			gameDayPaneMap.put( gameDate, pane );
+		}
 	}
 
 
