@@ -149,11 +149,13 @@ public class NHLApp extends Application {
 		showLabel.setPrefHeight( 20.0 );
 		showLabel.setLayoutX( 10 );
 		showLabel.setLayoutY( 10 );
+		showLabel.setStyle( BORDER_STYLE );
 		pane.getChildren().add( showLabel );
 
 		showScores = new SwitchButton( show -> refresh( show ) );
 		showScores.setLayoutX( 85 );
 		showScores.setLayoutY( 12.5 );
+		showScores.setStyle( BORDER_STYLE );
 		pane.getChildren().add( showScores );
 
 		// Link "show scores" label with the toggle switch
