@@ -155,6 +155,9 @@ public class NHLApp extends Application {
 		showScores.setLayoutX( 85 );
 		showScores.setLayoutY( 12.5 );
 		pane.getChildren().add( showScores );
+
+		// Link "show scores" label with the toggle switch
+		showLabel.setOnMouseClicked( showScores.getOnMouseClicked() );
 	}
 
 
