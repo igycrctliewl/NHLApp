@@ -8,6 +8,6 @@ public class DateTimeFormat {
 	private static final DateTimeFormatter MDY = DateTimeFormatter.ofPattern( "M/d/yyyy" );
 
 	public static String getFormattedDate( LocalDate date ) {
-		return date.format( MDY );
+		return ( date == null ? "" : date.format( MDY ) );
 	}
 }

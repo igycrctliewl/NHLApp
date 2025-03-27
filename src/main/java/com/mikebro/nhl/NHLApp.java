@@ -77,7 +77,8 @@ public class NHLApp extends Application {
 		gameDayPaneMap.put( gameDayPane.getGameDate(), gameDayPane );
 
 		goToPrevious = new Label();
-		goToPrevious.setText( "<-- " + getFormattedDate( gameDayPane.getPrevDate() ));
+		goToPrevious.setStyle( BORDER_STYLE );
+		setPrevDateText( gameDayPane.getPrevDate() );
 		goToPrevious.setFont( NAV_LBL_FONT );
 		goToPrevious.setPrefHeight( NAV_LBL_HEIGHT );
 		goToPrevious.setPrefWidth( NAV_LBL_WIDTH );
@@ -85,6 +86,7 @@ public class NHLApp extends Application {
 		goToPrevious.setOnMouseClicked( event -> navigateToPrevious() );
 
 		goToToday = new Label();
+		goToToday.setStyle( BORDER_STYLE );
 		goToToday.setText( "Today" );
 		goToToday.setFont( NAV_LBL_FONT );
 		goToToday.setPrefHeight( NAV_LBL_HEIGHT );
@@ -93,7 +95,8 @@ public class NHLApp extends Application {
 		goToToday.setOnMouseClicked( event -> navigateToToday() );
 
 		goToNext = new Label();
-		goToNext.setText( getFormattedDate( gameDayPane.getNextDate() ) + " -->" );
+		goToNext.setStyle( BORDER_STYLE );
+		setNextDateText( gameDayPane.getNextDate() );
 		goToNext.setFont( NAV_LBL_FONT );
 		goToNext.setPrefHeight( NAV_LBL_HEIGHT );
 		goToNext.setPrefWidth( NAV_LBL_WIDTH );
@@ -187,9 +190,9 @@ public class NHLApp extends Application {
 		navigatingToPane.wakeup();
 
 		// update prev/next label text
-		goToPrevious.setText( "<-- " + getFormattedDate( navigatingToPane.getPrevDate() ));
+		setPrevDateText( navigatingToPane.getPrevDate() );
 		goToToday.setVisible( ! navigatingToPane.getGameDate().equals( LocalDate.now() ) );
-		goToNext.setText( getFormattedDate( navigatingToPane.getNextDate() ) + " -->" );
+		setNextDateText( navigatingToPane.getNextDate() );
 
 		// display new GameDayPane
 		gameStatusPane.getChildren().removeAll( gameDayPane );
@@ -213,6 +216,15 @@ public class NHLApp extends Application {
 		refreshForNavigation( gameDayPane.getNextDate() );
 	}
 
+	private void setPrevDateText( LocalDate prevDate ) {
+		goToPrevious.setVisible( prevDate != null );
+		goToPrevious.setText( "<-- " + getFormattedDate( prevDate ));
+	}
+
+	private void setNextDateText( LocalDate nextDate ) {
+		goToNext.setVisible( nextDate != null );
+		goToNext.setText( getFormattedDate( nextDate ) + " -->" );
+	}
 
 	private void preloadPrevNextDay( GameDayPane gameDay ) {
 		CompletableFuture<Void> prev = CompletableFuture.runAsync( () -> preloadGameDate( gameDay.getPrevDate() ) );
