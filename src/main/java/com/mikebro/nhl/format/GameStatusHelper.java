@@ -97,7 +97,11 @@ public class GameStatusHelper {
 			stateOfPlay = TIME_DISPLAY.format( game.getStartTime() );
 			break;
 		case "PRE":
-			stateOfPlay = "Pre-Game";
+			if( showScores ) {
+				stateOfPlay = "Pre-Game";
+			} else {
+				stateOfPlay = TIME_DISPLAY.format( game.getStartTime() );
+			}
 			break;
 		case "LIVE":
 		case "CRIT":
