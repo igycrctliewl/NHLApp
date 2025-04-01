@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.mikebro.nhl.control.GameDayPane;
 import com.mikebro.nhl.control.SwitchButton;
@@ -30,7 +30,7 @@ import javafx.stage.Stage;
  */
 public class NHLApp extends Application {
 
-	private static final Log logger = LogFactory.getLog( NHLApp.class );
+	private static final Logger logger = LogManager.getLogger( NHLApp.class );
 	private static final Font NAV_LBL_FONT = new Font( "Verdana", 12.0 );
 	private static final String BORDER_STYLE = "-fx-border-color: BLACK; -fx-border-width: 0";
 	private static final double NAV_LBL_HEIGHT = 40.0;
@@ -49,6 +49,7 @@ public class NHLApp extends Application {
 	private GameDayPane gameDayPane;
 	private Map<LocalDate,GameDayPane> gameDayPaneMap;
 	private Stage mainApplicationStage;
+	private Scene scene;
 
 	private Insets bottomPad = new Insets(0, 0, 0, 0);
 	private Insets bothSidesPad = new Insets(0, 25, 0, 25);
@@ -116,11 +117,9 @@ public class NHLApp extends Application {
 		hbox1.setLayoutY( 10 );
 		hbox1.setPadding( bottomPad );
 
-		// TODO: the height and width of gameStatusPane should be derived
-		// from the dimensions of gameDayPane
 		gameStatusPane = new Pane();
 		gameStatusPane.setStyle( BORDER_STYLE );
-		gameStatusPane.setPrefHeight( sceneHeight - 65 );
+		gameStatusPane.setPrefHeight( sceneHeight );
 		gameStatusPane.setPrefWidth( sceneWidth - 20 );
 		gameStatusPane.getChildren().add( gameDayPane );
 
@@ -132,11 +131,10 @@ public class NHLApp extends Application {
 		Pane root = new Pane();
 		root.getChildren().add( vbox1 );
 
-		// TODO: the minimum height of the main scene should be the height
-		// of gameDayPane + 65 or 500
-		Scene scene = new Scene( root, sceneWidth, sceneHeight );
+		scene = new Scene( root, sceneWidth, sceneHeight );
 		setAppTitle();
 		mainApplicationStage.setScene( scene );
+		setSizes();
 		mainApplicationStage.show();
 	}
 
@@ -198,6 +196,7 @@ public class NHLApp extends Application {
 		gameStatusPane.getChildren().removeAll( gameDayPane );
 		gameDayPane = navigatingToPane;
 		setAppTitle();
+		setSizes();
 		gameStatusPane.getChildren().add( gameDayPane );
 	}
 
@@ -244,5 +243,14 @@ public class NHLApp extends Application {
 
 	private void setAppTitle() {
 		mainApplicationStage.setTitle( "NHLApp - " + getFormattedDate( gameDayPane.getGameDate() ) );
+	}
+
+
+	private void setSizes() {
+		// expand the container controls and the main app if necessary for busy NHL schedules
+		double statusPaneHeight = Math.max( 330, 330 + gameDayPane.getSceneHeight() - 400 );
+		gameStatusPane.setPrefHeight( statusPaneHeight );
+		double stageHeight = Math.max( 510, 510 + gameDayPane.getSceneHeight() - 400 );
+		mainApplicationStage.setHeight( stageHeight );
 	}
 }
