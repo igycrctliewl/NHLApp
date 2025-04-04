@@ -3,11 +3,12 @@ package com.mikebro.nhl.control;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import javax.swing.Timer;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.mikebro.nhl.Launcher;
 import com.mikebro.nhl.NHLApp;
@@ -21,12 +22,13 @@ import javafx.scene.layout.Pane;
 
 public class GameDayPane extends Pane {
 
-	private static final Log logger = LogFactory.getLog( GameDayPane.class );
+	private static final Logger logger = LogManager.getLogger( GameDayPane.class );
 
 	private NHLService nhlService;
+	private Schedule schedule;
 	private LocalDate gameDate;
-	private LocalDate prevDate;
-	private LocalDate nextDate;
+//	private LocalDate prevDate;
+//	private LocalDate nextDate;
 	private Timer timer;
 	private Map<Integer,GameStatus> gameStatusMap;
 	private GameDayPane prevDayPane;
@@ -64,25 +66,23 @@ public class GameDayPane extends Pane {
 	}
 
 	public LocalDate getGameDate() {
-		return gameDate;
+		return this.gameDate;
 	}
 
 	public LocalDate getPrevDate() {
-		return prevDate;
+		return ( schedule != null ? schedule.getPrevDate() : null );
 	}
 
 	public LocalDate getNextDate() {
-		return nextDate;
+		return ( schedule != null ? schedule.getNextDate() : null );
 	}
 
 
 	public GameDayPane( LocalDate requestedDate, NHLApp app ) {
 		super();
+		this.gameDate = requestedDate;
 		nhlService = Launcher.getNHLService();
-		Schedule schedule = nhlService.getSchedule( requestedDate );
-		gameDate = schedule.getCurrentDate();
-		prevDate = schedule.getPrevDate();
-		nextDate = schedule.getNextDate();
+		schedule = nhlService.getSchedule( getGameDate() );
 		gameStatusMap = new HashMap<>();
 
 		if( schedule.getGames().size() == 0 ) {
@@ -103,8 +103,9 @@ public class GameDayPane extends Pane {
 			this.getChildren().add( stat );
 		}
 
-		timer = new Timer( 15000, event -> callRefresh( app.getShowScores().getState() ) );
-		timer.start();
+		timer = new Timer( 10000, event -> refreshSchedule() );
+		timer.setInitialDelay( 1000 );
+		wakeup();
 
 		if( sceneHeight > (labelY + yIncrement) ) {
 			// height is good
@@ -113,17 +114,28 @@ public class GameDayPane extends Pane {
 		}
 	}
 
-	public void callRefresh( boolean showScores ) {
-		Platform.runLater( () -> refresh( showScores ) );
+	private void refreshSchedule() {
+		logger.info( "refresh Schedule for {}", getGameDate() );
+		CompletableFuture.runAsync( () -> schedule = nhlService.getSchedule( getGameDate() ) );
 	}
 
-	public void refresh( boolean showScores ) {
-		logger.info( "refresh " + this.gameDate + " with showScores " + ( showScores ? "true" : "false" ) );
-		Schedule schedule = nhlService.getSchedule( gameDate );
-		for( Game game : schedule.getGames() ) {
-			GameStatus stat = gameStatusMap.get( game.getId() );
-			stat.setText( GameStatusHelper.buildGameString( game, showScores ) );
-		}
+
+	/**
+	 * Using the currently stored Schedule details, redraw the gameday information for this pane.
+	 * Call this method when navigating to prev/next game dates so that the next displayed information
+	 * matches the current setting of the show-scores control.
+	 * 
+	 * @param showScores
+	 */
+	public void redrawPane( boolean showScores ) {
+		Platform.runLater( () -> {
+			hibernate();
+			for( Game game : schedule.getGames() ) {
+				GameStatus stat = gameStatusMap.get( game.getId() );
+				stat.setText( GameStatusHelper.buildGameString( game, showScores ) );
+			}
+			wakeup();
+		});
 	}
 
 
@@ -135,9 +147,12 @@ public class GameDayPane extends Pane {
 	}
 
 	/**
-	 * Restart the internal refresh timer for this GameDayPane
+	 * Restart the internal refresh timer for this GameDayPane.<br>
+	 * Timer will only be allowed to start if this pane is for today's date, since otherwise the data will not be changing.
 	 */
 	public void wakeup() {
-		timer.restart();
+		if( LocalDate.now().equals( getGameDate() ) ) {
+			timer.restart();
+		}
 	}
 }

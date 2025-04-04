@@ -166,7 +166,7 @@ public class NHLApp extends Application {
 
 	public void refresh( boolean showScores ) {
 		logger.info( "refresh with showScores " + ( showScores ? "true" : "false" ) );
-		gameDayPane.refresh( showScores );
+		gameDayPane.redrawPane( showScores );
 	}
 
 
@@ -197,6 +197,7 @@ public class NHLApp extends Application {
 		gameDayPane = navigatingToPane;
 		setAppTitle();
 		setSizes();
+		gameDayPane.redrawPane( showScores.getState() );
 		gameStatusPane.getChildren().add( gameDayPane );
 	}
 
@@ -226,9 +227,8 @@ public class NHLApp extends Application {
 	}
 
 	private void preloadPrevNextDay( GameDayPane gameDay ) {
-		CompletableFuture<Void> prev = CompletableFuture.runAsync( () -> preloadGameDate( gameDay.getPrevDate() ) );
-		CompletableFuture<Void> next = CompletableFuture.runAsync( () -> preloadGameDate( gameDay.getNextDate() ) );
-		CompletableFuture.allOf( prev, next );
+		CompletableFuture.runAsync( () -> preloadGameDate( gameDay.getPrevDate() ) );
+		CompletableFuture.runAsync( () -> preloadGameDate( gameDay.getNextDate() ) );
 	}
 
 	private void preloadGameDate( LocalDate gameDate ) {
