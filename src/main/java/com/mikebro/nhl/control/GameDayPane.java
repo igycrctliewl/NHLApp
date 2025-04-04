@@ -24,11 +24,10 @@ public class GameDayPane extends Pane {
 
 	private static final Logger logger = LogManager.getLogger( GameDayPane.class );
 
+	private NHLApp parent;
 	private NHLService nhlService;
 	private Schedule schedule;
 	private LocalDate gameDate;
-//	private LocalDate prevDate;
-//	private LocalDate nextDate;
 	private Timer timer;
 	private Map<Integer,GameStatus> gameStatusMap;
 	private GameDayPane prevDayPane;
@@ -80,6 +79,7 @@ public class GameDayPane extends Pane {
 
 	public GameDayPane( LocalDate requestedDate, NHLApp app ) {
 		super();
+		this.parent = app;
 		this.gameDate = requestedDate;
 		nhlService = Launcher.getNHLService();
 		schedule = nhlService.getSchedule( getGameDate() );
@@ -94,7 +94,7 @@ public class GameDayPane extends Pane {
 		}
 
 		for( Game game : schedule.getGames() ) {
-			GameStatus stat = new GameStatus( GameStatusHelper.buildGameString( game, app.getShowScores().getState() ) );
+			GameStatus stat = new GameStatus( GameStatusHelper.buildGameString( game, parent.getShowScores().getState() ) );
 			stat.setTooltip( GameStatusHelper.buildToolTip( game ) );
 			gameStatusMap.put( game.getId(), stat );
 			stat.setLayoutX( labelX );
@@ -104,7 +104,6 @@ public class GameDayPane extends Pane {
 		}
 
 		timer = new Timer( 10000, event -> refreshSchedule() );
-		timer.setInitialDelay( 1000 );
 		wakeup();
 
 		if( sceneHeight > (labelY + yIncrement) ) {
@@ -116,7 +115,10 @@ public class GameDayPane extends Pane {
 
 	private void refreshSchedule() {
 		logger.info( "refresh Schedule for {}", getGameDate() );
-		CompletableFuture.runAsync( () -> schedule = nhlService.getSchedule( getGameDate() ) );
+		CompletableFuture.runAsync( () -> {
+			schedule = nhlService.getSchedule( getGameDate() );
+			redrawPane( parent.getShowScores().getState() );
+		});
 	}
 
 
@@ -153,6 +155,8 @@ public class GameDayPane extends Pane {
 	public void wakeup() {
 		if( LocalDate.now().equals( getGameDate() ) ) {
 			timer.restart();
+		} else {
+			timer.stop();
 		}
 	}
 }
