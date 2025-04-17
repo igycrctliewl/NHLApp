@@ -70,6 +70,8 @@ public class GameStatusHelper {
  *     gameState = OFF
  * gameScheduleState = PPD
  *     gameState = FUT
+ * gameScheduleState = TBD - e.g. playoff game where time has not been fixed
+ *     gameState = FUT
  */
 
 	private static String currentGameState( Game game, boolean showScores ) {
@@ -77,6 +79,9 @@ public class GameStatusHelper {
 		switch( game.getGameScheduleState() ) {
 		case "OK":
 			stateOfPlay = gameScheduleStateOK( game, showScores );
+			break;
+		case "TBD":
+			stateOfPlay = "TBD";
 			break;
 		case "PPD":
 			stateOfPlay = "PPD";
