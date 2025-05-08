@@ -7,11 +7,73 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
+<script language="javascript" src="nhlReports.js" ></script>
+
 <body>
 
 <div class="w3-row">
+
+
+	<!--  Generate the list of today's games -->
 	<div class="w3-container ">
-		<h2>NHL Games App</h2>
+		<p id="gameList">
+	</div>
+
+	<!--  Present the list of reports available -->
+	<div class="w3-container ">
+
+		<label>Game Number:</label>
+		<div class="w3-bar">
+			<input class="w3-input w3-border w3-bar-item" type="text" style="width:30%" name="gameNumber">
+	
+			<button type="button" onclick="launchReports()" class="w3-button w3-bar-item w3-ripple w3-light-grey w3-round-large w3-border w3-border-black">
+				Launch
+			</button>
+		</div>
+
+
+		<form name="reports" class="w3-container" action="noPage">
+			<h2>NHL Game Reports</h2>
+			<input class="w3-check" type="checkbox" onclick="selectAll()" name="allCk">
+			<label>Most Reports</label><br>
+		
+			<input class="w3-check" type="checkbox" name="gsRptCk" checked>
+			<label>Game Summary</label><br>
+		
+			<input class="w3-check" type="checkbox" name="esRptCk" >
+			<label>Event Summary</label><br>
+		
+			<input class="w3-check" type="checkbox" name="plRptCk" >
+			<label>Full Play-by-Play</label><br>
+		
+			<input class="w3-check" type="checkbox" name="fsRptCk" >
+			<label>Face-off Summary</label><br>
+		
+			<input class="w3-check" type="checkbox" name="fcRptCk" >
+			<label>Face-off Comparison</label><br>
+		
+			<input class="w3-check" type="checkbox" name="roRptCk" >
+			<label>Roster Report</label><br>
+		
+			<input class="w3-check" type="checkbox" name="tvRptCk" >
+			<label>TOI - Visitors</label><br>
+		
+			<input class="w3-check" type="checkbox" name="thRptCk" >
+			<label>TOI - Home</label><br>
+		
+			<input class="w3-check" type="checkbox" name="ssRptCk" >
+			<label>Shot Report</label><br>
+		
+			<input class="w3-check" type="checkbox" name="scRptCk" >
+			<label>Shift Chart</label><br>
+		
+			<input class="w3-check" type="checkbox" name="soRptCk" >
+			<label>Shootout Report</label><br><br>
+		</form>
+	</div>
+
+	<div class="w3-container ">
+		<h3>Get the app:</h3>
 		<a href="NHLApp.jar" class="w3-check">NHLApp 1.2.9 Download</a>
 	</div>
 </div>

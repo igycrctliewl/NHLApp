@@ -1,0 +1,94 @@
+[ {
+  "code" : "1",
+  "abstractGameState" : "Preview",
+  "detailedState" : "Scheduled",
+  "baseballCode" : "S",
+  "startTimeTBD" : false
+}, {
+  "code" : "8",
+  "abstractGameState" : "Preview",
+  "detailedState" : "Scheduled (Time TBD)",
+  "baseballCode" : "S",
+  "startTimeTBD" : false
+}, {
+  "code" : "9",
+  "abstractGameState" : "Preview",
+  "detailedState" : "Postponed",
+  "baseballCode" : "S",
+  "startTimeTBD" : false
+}, {
+  "code" : "2",
+  "abstractGameState" : "Preview",
+  "detailedState" : "Pre-Game",
+  "baseballCode" : "P",
+  "startTimeTBD" : false
+}, {
+  "code" : "3",
+  "abstractGameState" : "Live",
+  "detailedState" : "In Progress",
+  "baseballCode" : "I",
+  "startTimeTBD" : false
+}, {
+  "code" : "4",
+  "abstractGameState" : "Live",
+  "detailedState" : "In Progress - Critical",
+  "baseballCode" : "I",
+  "startTimeTBD" : false
+}, 
+
+
+{
+  "code" : "5",
+  "abstractGameState" : "Final",
+  "detailedState" : "Game Over",
+  "baseballCode" : "O",
+  "startTimeTBD" : false
+}, {
+  "code" : "6",
+  "abstractGameState" : "Final",
+  "detailedState" : "Final",
+  "baseballCode" : "F",
+  "startTimeTBD" : false
+}, {
+  "code" : "7",
+  "abstractGameState" : "Final",
+  "detailedState" : "Final",
+  "baseballCode" : "F",
+  "startTimeTBD" : false
+} ]
+
+
+
+https://statsapi.web.nhl.com/api/v1/schedule?startDate=2021-01-25&endDate=2021-01-25&
+hydrate=team(leaders(categories=[points,goals,assists],gameTypes=[R])),
+linescore,
+broadcasts(all),
+tickets,
+game(content(media(epg),highlights(scoreboard)),seriesSummary),
+
+radioBroadcasts,metadata,decisions,scoringplays,seriesSummary(series)&site=en_nhl&teamId=&gameType=&timecode=
+
+
+
+
+      "linescore" : {
+        "currentPeriod" : 4,
+        "currentPeriodOrdinal" : "OT",
+        "currentPeriodTimeRemaining" : "04:03",
+        "periods" : [ {
+          "periodType" : "REGULAR",
+
+
+    },
+      "linescore" : {
+        "currentPeriod" : 5,
+        "currentPeriodOrdinal" : "SO",
+        "currentPeriodTimeRemaining" : "00:00",
+        "periods" : [ {
+          "periodType" : "REGULAR",
+
+
+
+format the time as-desired:
+var d = new Date("2015-03-25");
+document.getElementById("demo").innerHTML = d.toLocaleTimeString( 'en-US', { timeZoneName: 'short' } ).replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3");
