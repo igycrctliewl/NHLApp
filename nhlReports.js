@@ -1,10 +1,10 @@
-var season = "20252026";
+var season = "20262027";
 const PRESEASON = "01";
 const REGULAR_SEASON = "02";
 const PLAYOFFS = "03";
 
 // use this to indicate which part of the season we are using
-var part = PLAYOFFS;
+var part = PRESEASON;
 
 function launchReports() {
 	var x = document.forms["reports"]["gsRptCk"].checked;
