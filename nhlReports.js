@@ -4,7 +4,7 @@ const REGULAR_SEASON = "02";
 const PLAYOFFS = "03";
 
 // use this to indicate which part of the season we are using
-var part = PRESEASON;
+var part = REGULAR_SEASON;
 
 function launchReports() {
 	var x = document.forms["reports"]["gsRptCk"].checked;
