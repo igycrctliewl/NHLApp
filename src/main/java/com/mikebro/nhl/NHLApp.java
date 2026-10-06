@@ -2,6 +2,7 @@ package com.mikebro.nhl;
 
 import static com.mikebro.nhl.format.DateTimeFormat.getFormattedDate;
 
+import java.awt.SplashScreen;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashMap;
@@ -135,6 +136,10 @@ public class NHLApp extends Application {
 		setAppTitle();
 		mainApplicationStage.setScene( scene );
 		setSizes();
+		SplashScreen sp = SplashScreen.getSplashScreen();
+		if( sp != null ) {
+			sp.close();
+		}
 		mainApplicationStage.show();
 	}
 

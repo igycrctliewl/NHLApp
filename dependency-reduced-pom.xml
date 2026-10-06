@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mikebro.apps</groupId>
   <artifactId>NHLApp</artifactId>
-  <version>mac-1.2.9</version>
+  <version>mac-1.2.10</version>
   <build>
     <resources>
       <resource>
@@ -32,6 +32,9 @@
               <transformers>
                 <transformer>
                   <mainClass>com.mikebro.nhl.Launcher</mainClass>
+                  <manifestEntries>
+                    <SplashScreen-Image>hockey.jpg</SplashScreen-Image>
+                  </manifestEntries>
                 </transformer>
               </transformers>
             </configuration>
