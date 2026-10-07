@@ -67,7 +67,9 @@ public class GameStatusHelper {
  *     gameState = PRE
  *     gameState = LIVE
  *         periodType = REG
- *     gameState = OFF
+ *     gameState = OVER - game play has ended but review may still be pending.  Treated as in-game
+ *     gameState = FINAL - game has ended and result confirmed
+ *     gameState = OFF - all statistics are official
  * gameScheduleState = PPD
  *     gameState = FUT
  * gameScheduleState = TBD - e.g. playoff game where time has not been fixed
@@ -110,10 +112,11 @@ public class GameStatusHelper {
 			break;
 		case "LIVE":
 		case "CRIT":
+		case "OVER":
 			stateOfPlay = gamePeriodState( game, showScores );
 			break;
-		case "OFF":
 		case "FINAL":
+		case "OFF":
 			stateOfPlay = "Final";
 			// append OT or SO tag for games in extra-time
 			if( game.getPeriodDescriptor().getNumber() > 3 && showScores ) {
@@ -169,8 +172,9 @@ public class GameStatusHelper {
 			switch( game.getGameState() ) {
 			case "LIVE":
 			case "CRIT":
-			case "OFF":
+			case "OVER":
 			case "FINAL":
+			case "OFF":
 				StringBuilder builder = new StringBuilder();
 				builder.append( " " );
 				builder.append( game.getAwayTeam().getScore().toString() );
