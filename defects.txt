@@ -1,3 +1,27 @@
+Defect: It seems we have a new game-state value "OVER"
+OVER means game play has ended and is *potentially* over, but last-second review may still be pending
+I am going to treat this status as if the game were still in-play
+
+
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+18:42:07.229 : ERROR: [JavaFX Application Thread] : com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:125) - Unknown gameState value >OVER< for game 2026020046
+18:42:17.377 : ERROR: [JavaFX Application Thread] : com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:125) - Unknown gameState value >OVER< for game 2026020046
+18:43:08.306 : ERROR: [JavaFX Application Thread] : com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:125) - Unknown gameState value >OVER< for game 2026020049
+18:43:18.464 : ERROR: [JavaFX Application Thread] : com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:125) - Unknown gameState value >OVER< for game 2026020049
+18:43:28.622 : ERROR: [JavaFX Application Thread] : com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:125) - Unknown gameState value >OVER< for game 2026020049
+18:43:39.018 : ERROR: [JavaFX Application Thread] : com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:125) - Unknown gameState value >OVER< for game 2026020049
+18:43:49.215 : ERROR: [JavaFX Application Thread] : com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:125) - Unknown gameState value >OVER< for game 2026020049
+18:46:01.326 : ERROR: [JavaFX Application Thread] : com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:125) - Unknown gameState value >OVER< for game 2026020044
+18:46:11.544 : ERROR: [JavaFX Application Thread] : com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:125) - Unknown gameState value >OVER< for game 2026020044
+18:46:21.691 : ERROR: [JavaFX Application Thread] : com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:125) - Unknown gameState value >OVER< for game 2026020044
+18:46:31.854 : ERROR: [JavaFX Application Thread] : com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:125) - Unknown gameState value >OVER< for game 2026020044
+18:46:42.040 : ERROR: [JavaFX Application Thread] : com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:125) - Unknown gameState value >OVER< for game 2026020044
+18:46:52.182 : ERROR: [JavaFX Application Thread] : com.mikebro.nhl.format.GameStatusHelper (GameStatusHelper.java:125) - Unknown gameState value >OVER< for game 2026020044
+
+
+
+
+
 Defect : There is a period-type value "SO" that is used to indicate a reg-season shoot-out
 
 WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.

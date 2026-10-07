@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mikebro.apps</groupId>
   <artifactId>NHLApp</artifactId>
-  <version>mac-1.2.10</version>
+  <version>mac-1.2.11</version>
   <build>
     <resources>
       <resource>
